@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+  <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" type="text/css" href="css/main.css">
+  <title>产品管理后台</title>
+</head>
+<body>
+  <!--pc导航栏--> 
+  <nav class="navbar-inverse" role="navigation"> 
+    <div class="container"> 
+      <div class="navbar-header"> 
+        <a class="navbar-brand">后台管理</a> 
+      </div> 
+      <div> 
+        <ul class="nav navbar-nav"> 
+          <li><a href="#">添加产品</a></li> 
+          <li><a href="#">管理产品</a></li> 
+          <li><a href="#">修改产品</a></li> 
+        </ul> 
+      </div> 
+    </div> 
+  </nav>
+
+  <!-- 管理登录模块 -->
+  <div class="index_01"> 
+<table style="width: 100%;height:100%;" >
+  <tr>
+    <td align="center" >
+      <table align="center" width=450 height=230; class="index_table" >  
+
+       <form > 
+     <tr align="center" style="font-size:25px;">
+           <td colspan="2" style="font-size:35px;">用户登录</td>
+     </tr>
+       <tr class="usermsg">    
+           <td align="center" style="font-size:25px;">用户名</td>  
+           <td><input id="uid" type="text" maxlength="16" name="uid" placeholder="请输入账号" style="width:180px;font-size:20px; "></td>  
+           <td id="tip">用户名不能为空</td>  
+       </tr>  
+       <tr class="pwdmsg">  
+           <td align="center" style="font-size:25px;">密   码</td>  
+           <td><input id="password" name="password" type="password" maxlength="16" placeholder="请输入密码" style="width:180px;font-size:20px;"></td>
+       </tr>
+       <tr align="center"> 
+           <td colspan="2">
+           <button id="loadbtn" type="submit" class="btn btn-default" >登录</button>
+           <a class="btn btn-default" href="register.php" role="button">注册</a>
+           </td>  
+       </tr> 
+     </form>
+     </table>
+    </td>
+  </tr>
+</table> 
+</div>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+  //设置页面初始焦点
+  $(function(){ 
+    $("#uid").focus(); 
+  }); 
+
+  $("input:text,textarea,input:password").focus(function() { 
+    $(this).addClass("cur_select"); 
+  }); 
+  $("input:text,textarea,input:password").blur(function() { 
+    $(this).removeClass("cur_select"); 
+  }); 
+  // $("input:text").blur(function() { 
+  //   var user = $("#uid").val();
+  //   console.log(user)
+  //   if(user===""){ 
+  //     $("#tip").show()
+  //     $("#user").focus(); 
+  //     return false; 
+  //   } 
+  // }); 
+
+  $("#loadbtn").on('click',function(){ 
+  var uid = $("#uid").val(); 
+  var password = $("#password").val(); 
+  if(uid===""){ 
+    // $("#tip").show()
+    $('<td id="msg" />').html("用户名不能为空！").appendTo('.usermsg').fadeOut(2000); 
+    $("#uid").focus(); 
+    return false; 
+  } 
+  if(password===""){ 
+    $('<div id="msg" />').html("密码不能为空！").appendTo('.pwdmsg').fadeOut(2000);
+    $("#password").focus(); 
+    return false; 
+  } 
+  $.ajaxSettings.async = false; 
+  $.post('dologin.php',{username:uid,pwd:password},function(data) { 
+          // alert(data)
+          if(data==="success"){
+            setTimeout(function(){
+              window.location.href = 'manage.php'
+          },1);
+            alert("登录成功，即将跳转管理页面！")
+          }else{
+            alert("登录失败，请重新输入")
+          }
+        }) 
+ 
+        
+});
+</script>
+</body>
+</html>
